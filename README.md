@@ -1,0 +1,2 @@
+# Java-JTable
+Using Java's JTable to preview data. To manipulate JTable we need to use JTable's models, specifically DefaultTableModel to manipulate rows and TableColumnModel to manipulate columns. This simple example will show you how can you integrate JTable in your projects, use it to display, edit, delete and save your data using binary input and output. You can easily modify this code to get the data from a remote database and then you can modify that data inside of JTable.
