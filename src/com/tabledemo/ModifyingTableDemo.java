@@ -25,10 +25,11 @@ import javax.swing.table.TableColumnModel;
 public class ModifyingTableDemo extends JFrame {
 
 	// column names
-	private String[] columns = {"Name", "Last Name", "Job Title"};
+	private String[] columns = {"厂家", "IP地址", "物理位置"};
 	
 	// row data
-	private Object[][] data = {{"Carl", "Jonson", "Teacher"}};
+	//private Object[][] data = {{"Carl", "Jonson", "Teacher"}};
+	private Object[][] data = null;
 	
 	// default table model to modify the table
 	private DefaultTableModel model = new DefaultTableModel(data, columns);
@@ -47,7 +48,7 @@ public class ModifyingTableDemo extends JFrame {
 	private JButton jbtClear = new JButton("Clear");
 	private JButton jbtRestore = new JButton("Restore");
 	
-	public ModifyingTableDemo() {
+	public ModifyingTable() {
 		
 		// showing the grid and setting its color to black(default color is white)
 		table.setShowGrid(true);
@@ -90,12 +91,21 @@ public class ModifyingTableDemo extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// if the user selects a row we will add a new row before the selected row
-				if(table.getSelectedRow() >= 0) {
-					model.insertRow(table.getSelectedRow(), new Vector<String>());
-				} else {
-					// else the row will be added at the last index
-					model.addRow(new Vector<String>());
-				}
+//				if(table.getSelectedRow() >= 0) {
+//					model.insertRow(table.getSelectedRow(), new Vector<String>());
+//				} else {
+//					// else the row will be added at the last index
+//					model.addRow(new Vector<String>());
+//				}
+				model.addRow(new Vector<String>());
+				int rowCount=table.getRowCount();//获得总行数
+				table.requestFocus();
+				table.setRowSelectionInterval(rowCount-1, rowCount-1);//最后一行获得焦点
+				 
+				table.getSelectionModel().setSelectionInterval(rowCount-1,rowCount-1);
+			     Rectangle rect=table.getCellRect(rowCount-1,0,true);
+			     table.updateUI();
+			     table.scrollRectToVisible(rect);
 			}
 		});
 		
@@ -119,6 +129,16 @@ public class ModifyingTableDemo extends JFrame {
 				// checking if the user has selected a row - if true delete the selected row
 				if(table.getSelectedRow() >= 0) {
 					model.removeRow(table.getSelectedRow());
+					
+					int rowCount=table.getRowCount();//获得总行数
+					table.requestFocus();
+					table.setRowSelectionInterval(rowCount-1, rowCount-1);//最后一行获得焦点
+					 
+					table.getSelectionModel().setSelectionInterval(rowCount-1,rowCount-1);
+				     Rectangle rect=table.getCellRect(rowCount-1,0,true);
+				     table.updateUI();
+				     table.scrollRectToVisible(rect);
+					
 				}
 			}
 		});
@@ -136,6 +156,9 @@ public class ModifyingTableDemo extends JFrame {
 					TableColumn column = columnModel.getColumn(table.getSelectedColumn());
 					// removing a column from the column model
 					columnModel.removeColumn(column);
+					
+					
+					 
 				}
 			}
 		});
@@ -155,6 +178,7 @@ public class ModifyingTableDemo extends JFrame {
 					// saving column names
 					out.writeObject(getColumnNames());
 					out.close();
+					
 				} catch(Exception ex) {
 					
 				}
@@ -192,10 +216,24 @@ public class ModifyingTableDemo extends JFrame {
 				}
 			}
 		});
-			
+		restore();	
 		setVisible(true);
 	}
-	
+	private void restore(){
+		try {
+			
+			// using object input stream to read the data back
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream("tabledata.dat"));
+			// using vectors to get the row and column names data
+			Vector<String> rowData = (Vector<String>) in.readObject();
+			Vector<String> columns = (Vector<String>) in.readObject();
+			// passing row and column names back to our model
+			model.setDataVector(rowData, columns);
+			in.close();
+		} catch(Exception ex) {
+			
+		}
+	}
 	// getting column names
 	private Vector<String> getColumnNames() {
 		
@@ -210,7 +248,7 @@ public class ModifyingTableDemo extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		ModifyingTableDemo m = new ModifyingTableDemo();
+		ModifyingTable m = new ModifyingTable();
 	}
 	
 }
