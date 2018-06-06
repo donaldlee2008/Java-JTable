@@ -3,6 +3,7 @@ package com.tabledemo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
@@ -48,7 +49,7 @@ public class ModifyingTableDemo extends JFrame {
 	private JButton jbtClear = new JButton("Clear");
 	private JButton jbtRestore = new JButton("Restore");
 	
-	public ModifyingTable() {
+	public ModifyingTableDemo() {
 		
 		// showing the grid and setting its color to black(default color is white)
 		table.setShowGrid(true);
