@@ -81,7 +81,7 @@ public class ModifyingTableDemo extends JFrame {
 		// adding the table to a scroll pane to make it scrollable(table is not scrollable by default)
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		add(p3, BorderLayout.SOUTH);
-		
+		table.putClientProperty("terminateEditOnFocusLost",true);
 		// setting the selection mode to multiple interval(multiple items can be selected)
 		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		
